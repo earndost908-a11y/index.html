@@ -1,8 +1,87 @@
-const firebaseConfig = {
-  apiKey: "AIzaSyBxxxxxxxxxxxxxxxxxxxxxxxxxxxx",  // ye copy karna hai
-  authDomain: "earn-dost-d8c85.firebaseapp.com",
-  projectId: "earn-dost-d8c85",
-  storageBucket: "earn-dost-d8c85.appspot.com",
-  messagingSenderId: "1019395758465",
-  appId: "1:1019395758465:web:5298eede37878a87e17080"  // ye bhi copy karna hai
-};
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EarnDost - Survey Karke Paise Kamao</title>
+  <style>
+    body { font-family: Arial, sans-serif; text-align: center; background: #f0f2f5; margin: 0; padding: 20px; }
+    .container { max-width: 400px; margin: 50px auto; background: white; padding: 30px; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+    h1 { color: #1877f2; }
+    button { background: #1877f2; color: white; border: none; padding: 12px 25px; font-size: 16px; border-radius: 8px; cursor: pointer; margin: 10px; width: 100%; }
+    button:hover { background: #0d65d9; }
+    #surveyBtn { background: #28a745; display: none; }
+    #logoutBtn { background: #dc3545; display: none; }
+    #userInfo { margin-top: 20px; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🚀 EarnDost</h1>
+    <p>Survey complete karke Coins kamao</p>
+
+    <button id="loginBtn">Login with Google</button>
+    <button id="surveyBtn">Complete Survey & Earn Coins</button>
+    <button id="logoutBtn">Logout</button>
+    
+    <div id="userInfo"></div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+    // 🔥 Yaha apna Firebase Config paste karo
+    const firebaseConfig = {
+      apiKey: "Yaha_Config_se_apiKey_paste_karo",  // Firebase > Project Settings > Config se copy karo
+      authDomain: "earn-dost-d8c85.firebaseapp.com",
+      projectId: "earn-dost-d8c85",
+      storageBucket: "earn-dost-d8c85.appspot.com",
+      messagingSenderId: "1019395758465",
+      appId: "1:1019395758465:web:5298eede37878a87e17080"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const provider = new GoogleAuthProvider();
+
+    const loginBtn = document.getElementById('loginBtn');
+    const logoutBtn = document.getElementById('logoutBtn');
+    const surveyBtn = document.getElementById('surveyBtn');
+    const userInfo = document.getElementById('userInfo');
+
+    // Login
+    loginBtn.onclick = () => {
+      signInWithPopup(auth, provider)
+      .catch(error => alert("Login Error: " + error.message));
+    };
+
+    // Logout
+    logoutBtn.onclick = () => {
+      signOut(auth);
+    };
+
+    // Login status check
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        userInfo.innerHTML = `Hi, ${user.displayName} 👋<br>Coins: 0`;
+        loginBtn.style.display = 'none';
+        surveyBtn.style.display = 'block';
+        logoutBtn.style.display = 'block';
+      } else {
+        userInfo.innerHTML = '';
+        loginBtn.style.display = 'block';
+        surveyBtn.style.display = 'none';
+        logoutBtn.style.display = 'none';
+      }
+    });
+
+    // Survey Button - CPX Research Link
+    surveyBtn.onclick = () => {
+      window.open("https://www.cpx-research.com/", "_blank");
+      alert("Survey complete karke wapas aao. Coins 24hr me add honge.");
+    };
+
+  </script>
+</body>
+</html>
